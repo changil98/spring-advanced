@@ -4,6 +4,8 @@ import com.gamebasic.game.entity.GamePhase;
 import com.gamebasic.game.entity.GameStatus;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class GameSummaryResponse {
     private final Long id;
@@ -13,6 +15,8 @@ public class GameSummaryResponse {
     private final GamePhase phase;
     private final GameStatus status;
     private final int deckSize;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public GameSummaryResponse(
             Long id, String playerName,
@@ -20,7 +24,9 @@ public class GameSummaryResponse {
             int currentHp,
             GamePhase phase,
             GameStatus status,
-            int deckSize
+            int deckSize,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
     ) {
         this.id = id;
         this.playerName = playerName;
@@ -29,5 +35,7 @@ public class GameSummaryResponse {
         this.phase = phase;
         this.status = status;
         this.deckSize = deckSize;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }
