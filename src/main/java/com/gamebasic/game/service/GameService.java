@@ -6,6 +6,7 @@ import com.gamebasic.game.dto.*;
 import com.gamebasic.game.entity.Game;
 import com.gamebasic.game.repository.GameRepository;
 import com.gamebasic.runcard.dto.CardResponse;
+import com.gamebasic.runcard.dto.DeckCount;
 import com.gamebasic.runcard.dto.RunCardRequest;
 import com.gamebasic.runcard.entity.RunCard;
 import com.gamebasic.runcard.repository.RunCardRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -91,20 +93,27 @@ public class GameService {
     @Transactional(readOnly = true)
     public List<GameSummaryResponse> getGames() {
         List<Game> games = gameRepository.findAllByOrderByIdDesc();
-        List<GameSummaryResponse> dtos = new ArrayList<>();
+        List<DeckCount> deckCounts = runCardRepository.countByGames(games);
+        List<GameSummaryResponse> gameSummaries = new ArrayList<>();
+
         for (Game game : games) {
-            List<RunCard> cards = runCardRepository.findAllByGameOrderByIdAsc(game);
-            dtos.add(new GameSummaryResponse(
+            gameSummaries.add(new GameSummaryResponse(
                     game.getId(),
                     game.getPlayerName(),
                     game.getCurrentFloor(),
                     game.getCurrentHp(),
                     game.getPhase(),
                     game.getStatus(),
-                    cards.size()
+                    deckCount(deckCounts, game)
             ));
         }
-        return dtos;
+        return gameSummaries;
+    }
+
+    private int deckCount(List<DeckCount> deckCounts, Game game) {
+        return deckCounts.stream().filter(deck -> Objects.equals(deck.getGameId(), game.getId()))
+                .findFirst().orElseThrow(
+                        () -> new GameNotFoundException(game.getId())).getDeckSize();
     }
 
     // TODO (Lv 7): 게임 상세 조회. 주석을 풀고 구현하세요.
