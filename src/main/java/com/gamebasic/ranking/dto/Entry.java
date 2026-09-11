@@ -1,12 +1,15 @@
-package com.gamebasic.ranking.entity;
+package com.gamebasic.ranking.dto;
 
+import lombok.Getter;
+
+@Getter
 public class Entry {
-    private int rank;
-    private String playerName;
-    private int clearTimeSeconds;
-    private int remainingHp;
-    private int bossTurns;
-    private int deckSize;
+    private final int rank;
+    private final String playerName;
+    private final int clearTimeSeconds;
+    private final int remainingHp;
+    private final int bossTurns;
+    private final int deckSize;
 
     public Entry(
             int rank,
