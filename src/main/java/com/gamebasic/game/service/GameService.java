@@ -43,7 +43,7 @@ public class GameService {
             game.getStatus(),
             deck,
             game.getCreatedAt(),
-            game.getCreatedAt()
+            game.getModifiedAt()
         );
     }
 
@@ -140,7 +140,7 @@ public class GameService {
                 game.getStatus(),
                 deck,
                 game.getCreatedAt(),
-                game.getCreatedAt()
+                game.getModifiedAt()
         );
     }
 
